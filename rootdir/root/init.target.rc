@@ -315,6 +315,12 @@ service sensorext /system/bin/sensorextd
     group root
     disabled
 
+service sensorservice /system/bin/sensorservice
+    class late_start
+    user root
+    group root
+    disabled
+
 service wait4sensorhub /system/bin/wait4sensorhub.sh
     class late_start
     user root

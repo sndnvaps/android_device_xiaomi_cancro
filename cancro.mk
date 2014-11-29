@@ -168,9 +168,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/system/etc/init.qcom.bt.sh:system/etc/init.qcom.bt.sh \
     $(LOCAL_PATH)/rootdir/system/etc/init.qcom.fm.sh:system/etc/init.qcom.fm.sh \
     $(LOCAL_PATH)/rootdir/system/etc/init.qcom.modem_links.sh:system/etc/init.qcom.modem_links.sh \
-    $(LOCAL_PATH)/rootdir/system/etc/init.qcom.post_boot.sh:system/etc/init.qcom.post_boot.sh \
     $(LOCAL_PATH)/rootdir/system/etc/init.qcom.wifi.sh:system/etc/init.qcom.wifi.sh \
     $(LOCAL_PATH)/rootdir/system/etc/qca6234-service.sh:system/etc/qca6234-service.sh \
+    $(LOCAL_PATH)/rootdir/system/etc/init.qcom.post_boot.sh:system/etc/init.qcom.post_boot.sh \
     $(LOCAL_PATH)/rootdir/system/etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin:system/etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin \
     $(LOCAL_PATH)/rootdir/system/etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin.pca:system/etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin.pca \
     $(LOCAL_PATH)/rootdir/system/etc/usf_post_boot.sh:system/etc/usf_post_boot.sh \
@@ -237,13 +237,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Filesystem management tools
 PRODUCT_PACKAGES += \
     make_ext4fs \
-    e2fsck \
     setup_fs \
     mke2fs \
     tune2fs \
-    mount.exfat \
-    fsck.exfat \
-    mkfs.exfat \
     ntfsfix \
     ntfs-3g \
     mkntfs \
@@ -262,6 +258,10 @@ PRODUCT_PACKAGES += \
     gralloc.msm8974 \
     hwcomposer.msm8974 \
     memtrack.msm8974 \
+    libmemalloc \
+    libgenlock \
+    libqdutils \
+    libqdMetaData \
     liboverlay
 
 # power down SIM card when modem is sent to Low Power Mode.
@@ -287,10 +287,13 @@ PRODUCT_PACKAGES += \
 
 # Misc dependency packages
 PRODUCT_PACKAGES += \
+    org.codeaurora.Performance \
     ebtables \
     ethertypes \
+    libcurl \
     curl \
     libnl_2 \
+    libebtc \
     libbson
 
 # ANT+
@@ -346,7 +349,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     debug.composition.type=dyn \
     dev.pm.dyn_samplingrate=1 \
     ril.subscription.types=RUIM \
-    ro.telephony.ril_class=QualcommSharedRIL \
     ro.opengles.version=196608 \
     persist.omh.enabled=true \
     persist.sys.ssr.restart_level=3 \
@@ -354,14 +356,14 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.debug.wfd.enable=1 \
     persist.sys.wfd.virtual=0 \
     ro.qualcomm.bt.hci_transport=smd \
-    ro.telephony.default_network=9 \
+    ro.telephony.default_network=0 \
     ro.use_data_netmgrd=true \
     persist.data.netmgrd.qos.enable=true \
     persist.data.tcpackprio.enable=true \
     ro.data.large_tcp_window_size=true \
     telephony.lteOnGsmDevice=0 \
     wifi.interface=wlan0 \
-    wifi.supplicant_scan_interval=15 \
+    wifi.supplicant_scan_interval=30 \
     ro.telephony.call_ring.multiple=0 \
     ro.fm.transmitter=false \
     ro.nfc.port=I2C \

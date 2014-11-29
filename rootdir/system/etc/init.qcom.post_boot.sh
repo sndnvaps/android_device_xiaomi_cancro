@@ -246,23 +246,23 @@ esac
 case "$target" in
     "msm8974")
         echo 4 > /sys/module/lpm_levels/enable_low_power/l2
-        echo 0 > /sys/module/msm_pm/modes/cpu0/power_collapse/suspend_enabled
+        echo 1 > /sys/module/msm_pm/modes/cpu0/power_collapse/suspend_enabled
         echo 1 > /sys/module/msm_pm/modes/cpu1/power_collapse/suspend_enabled
         echo 1 > /sys/module/msm_pm/modes/cpu2/power_collapse/suspend_enabled
         echo 1 > /sys/module/msm_pm/modes/cpu3/power_collapse/suspend_enabled
-        echo 0 > /sys/module/msm_pm/modes/cpu0/power_collapse/idle_enabled
+        echo 1 > /sys/module/msm_pm/modes/cpu0/power_collapse/idle_enabled
         echo 1 > /sys/module/msm_pm/modes/cpu1/power_collapse/idle_enabled
         echo 1 > /sys/module/msm_pm/modes/cpu2/power_collapse/idle_enabled
         echo 1 > /sys/module/msm_pm/modes/cpu3/power_collapse/idle_enabled
-        echo 0 > /sys/module/msm_pm/modes/cpu0/standalone_power_collapse/suspend_enabled
+        echo 1 > /sys/module/msm_pm/modes/cpu0/standalone_power_collapse/suspend_enabled
         echo 1 > /sys/module/msm_pm/modes/cpu1/standalone_power_collapse/suspend_enabled
         echo 1 > /sys/module/msm_pm/modes/cpu2/standalone_power_collapse/suspend_enabled
         echo 1 > /sys/module/msm_pm/modes/cpu3/standalone_power_collapse/suspend_enabled
-        echo 0 > /sys/module/msm_pm/modes/cpu0/standalone_power_collapse/idle_enabled
+        echo 1 > /sys/module/msm_pm/modes/cpu0/standalone_power_collapse/idle_enabled
         echo 1 > /sys/module/msm_pm/modes/cpu1/standalone_power_collapse/idle_enabled
         echo 1 > /sys/module/msm_pm/modes/cpu2/standalone_power_collapse/idle_enabled
         echo 1 > /sys/module/msm_pm/modes/cpu3/standalone_power_collapse/idle_enabled
-        echo 0 > /sys/module/msm_pm/modes/cpu0/retention/idle_enabled
+        echo 1 > /sys/module/msm_pm/modes/cpu0/retention/idle_enabled
         echo 1 > /sys/module/msm_pm/modes/cpu1/retention/idle_enabled
         echo 1 > /sys/module/msm_pm/modes/cpu2/retention/idle_enabled
         echo 1 > /sys/module/msm_pm/modes/cpu3/retention/idle_enabled
@@ -349,10 +349,6 @@ case "$target" in
         chown system.system /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq
         chown system.system /sys/devices/system/cpu/cpu3/cpufreq/sys_cap_freq
         chown system.system /sys/devices/system/cpu/cpu3/cpufreq/thermal_cap_freq
-        echo 2457600 > /sys/devices/system/cpu/cpu0/cpufreq/sys_cap_freq
-        echo 2457600 > /sys/devices/system/cpu/cpu1/cpufreq/sys_cap_freq
-        echo 2457600 > /sys/devices/system/cpu/cpu2/cpufreq/sys_cap_freq
-        echo 2457600 > /sys/devices/system/cpu/cpu3/cpufreq/sys_cap_freq
         chown system.system /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
         chown system.system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
         chown system.system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
@@ -551,7 +547,7 @@ case "$target" in
         start mpdecision
     ;;
     "msm8974")
-        echo 512 > /sys/block/mmcblk0/bdi/read_ahead_kb
+        echo 1024 > /sys/block/mmcblk0/bdi/read_ahead_kb
     ;;
     "apq8084")
         rm /data/system/default_values
