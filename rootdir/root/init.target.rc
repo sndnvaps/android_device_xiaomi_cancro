@@ -178,10 +178,20 @@ service mpdecision /system/bin/mpdecision --avg_comp
    group system
    disabled
 
+service qosmgrd /system/bin/qosmgr /system/etc/qosmgr_rules.xml
+   user system
+   group system
+   disabled
+
 service thermal-engine /system/bin/thermal-engine
-   class main
    user root
-   group radio system
+   group root
+   disabled
+
+service thermal-perf /system/bin/thermal-engine --config /system/etc/thermal-engine-perf.conf
+   user root
+   group root
+   disabled
 
 service time_daemon /system/bin/time_daemon
    class late_start
