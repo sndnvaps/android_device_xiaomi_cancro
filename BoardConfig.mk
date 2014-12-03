@@ -51,7 +51,7 @@ BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x02000000 --tags_offset 0x01E00000
 
 # kernel
 TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/kernel
-TARGET_KERNEL_SOURCE := kernel/kernel_msm
+TARGET_KERNEL_SOURCE := kernel/xiaomi/cancro
 TARGET_KERNEL_CONFIG := aosp_cancro_defconfig
 
 # Flags
