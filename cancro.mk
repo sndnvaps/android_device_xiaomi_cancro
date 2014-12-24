@@ -195,7 +195,7 @@ PRODUCT_PACKAGES += \
     libstagefrighthw \
     qcmediaplayer
 
-PRODUCT_BOOT_JARS += qcmediaplayer:org.codeaurora.Performance:qcom.fmradio
+PRODUCT_BOOT_JARS += qcmediaplayer:org.codeaurora.Performance
 
 PRODUCT_PACKAGES += \
     audiod \
@@ -232,7 +232,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     tunnel.audio.encode=false \
     audio.offload.pcm.enable=false \
     ro.hdmi.enable=true \
-    ro.qc.sdk.sensors.gestures=true \
     debug.sf.hw=1 \
     debug.egl.hw=1
 
@@ -371,7 +370,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.radio.add_power_save=1 \
     ro.fm.transmitter=false \
     ro.nfc.port=I2C \
-    ro.qualcomm.perf.cores_online=2 \
+    ro.qualcomm.perf.cores_online=1 \
     com.qc.hardware=true
 
 # Permissions
@@ -395,7 +394,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.stepcounter.xml:system/etc/permissions/android.hardware.sensor.stepcounter.xml \
     frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:system/etc/permissions/android.hardware.sensor.stepdetector.xml \
     frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml \
-    frameworks/native/data/etc/android.hardware.consumerir.xml:system/etc/permissions/android.hardware.consumerir.xml \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
     frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
