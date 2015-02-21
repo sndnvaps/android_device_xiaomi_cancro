@@ -1,5 +1,4 @@
-#
-# Copyright (C) 2013 The Android Open Source Project
+# Copyright (C) 2014 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-add_lunch_combo cm_cancro-userdebug
-add_lunch_combo omni_cancro-userdebug 
 
-# Run device patches on the tree
-# sh device/xiaomi/cancro/patches/apply.sh
+#
+# This file is the build configuration that is shared by all products
+# based on the flounder device
+#
+
+PRODUCT_RUNTIMES := runtime_libart_default
+
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_base.mk)
+$(call inherit-product, device/xiaomi/cancro/device.mk)
