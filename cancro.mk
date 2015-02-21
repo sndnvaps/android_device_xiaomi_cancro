@@ -7,6 +7,8 @@ DEVICE_PACKAGE_OVERLAYS += device/xiaomi/cancro/overlay
 
 LOCAL_PATH := device/xiaomi/cancro
 
+PRODUCT_CHARACTERISTICS := nosdcard
+
 # Temporary workaround
 $(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr/include)
 
@@ -16,56 +18,52 @@ PRODUCT_COPY_FILES += \
 
 # USB
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    persist.sys.usb.config=mtp \
     camera2.portability.force_api=1
-
-PRODUCT_TAGS += dalvik.gc.type-precise
 
 # Charger
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/root/chargeonlymode:root/sbin/chargeonlymode
 
-# Init
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/root/fstab.qcom:root/fstab.qcom \
-    $(LOCAL_PATH)/rootdir/root/init.class_main.sh:root/init.class_main.sh \
-    $(LOCAL_PATH)/rootdir/root/init.mdm.sh:root/init.mdm.sh \
-    $(LOCAL_PATH)/rootdir/root/init.qcom.class_core.sh:root/init.qcom.class_core.sh \
-    $(LOCAL_PATH)/rootdir/root/init.qcom.early_boot.sh:root/init.qcom.early_boot.sh \
-    $(LOCAL_PATH)/rootdir/root/init.qcom.factory.sh:root/init.qcom.factory.sh \
-    $(LOCAL_PATH)/rootdir/root/init.qcom.rc:root/init.qcom.rc \
-    $(LOCAL_PATH)/rootdir/root/init.qcom.sh:root/init.qcom.sh \
-    $(LOCAL_PATH)/rootdir/root/init.qcom.ssr.sh:root/init.qcom.ssr.sh \
-    $(LOCAL_PATH)/rootdir/root/init.qcom.syspart_fixup.sh:root/init.qcom.syspart_fixup.sh \
-    $(LOCAL_PATH)/rootdir/root/init.qcom.usb.rc:root/init.qcom.usb.rc \
-    $(LOCAL_PATH)/rootdir/root/init.qcom.usb.sh:root/init.qcom.usb.sh \
-    $(LOCAL_PATH)/rootdir/root/init.target.rc:root/init.target.rc \
-    $(LOCAL_PATH)/rootdir/root/ueventd.qcom.rc:root/ueventd.qcom.rc
+# Ramdisk
+PRODUCT_PACKAGES += \
+    fstab.qcom \
+    init.qcom.rc \
+    init.target.rc \
+    init.qcom.usb.rc \
+    ueventd.qcom.rc \
+    init.class_main.sh \
+    init.mdm.sh \
+    init.qcom.class_core.sh \
+    init.qcom.early_boot.sh \
+    init.qcom.factory.sh \
+    init.qcom.sh \
+    init.qcom.ssr.sh \
+    init.qcom.syspart_fixup.sh \
+    init.qcom.usb.sh
+
+# QCOM Config Script
+PRODUCT_PACKAGES += \
+    hsic.control.bt.sh \
+    init.qcom.bt.sh \
+    init.qcom.fm.sh \
+    init.qcom.modem_links.sh \
+    init.qcom.post_boot.sh \
+    init.qcom.wifi.sh \
+    qca6234-service.sh \
+    usf_post_boot.sh
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/mount_ext4.sh:system/bin/mount_ext4.sh \
     $(LOCAL_PATH)/rootdir/root/e2fsck_static:root/sbin/e2fsck_static
 
-PRODUCT_PACKAGES += \
-    dualboot_init
+#PRODUCT_PACKAGES += \
+#    dualboot_init
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/modules/radio-iris-transport.ko:system/lib/modules/radio-iris-transport.ko \
     $(LOCAL_PATH)/modules/scsi_wait_scan.ko:system/lib/modules/scsi_wait_scan.ko \
     $(LOCAL_PATH)/modules/wlan.ko:system/lib/modules/wlan.ko
-
-# Audio
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/audio/audio_policy.conf:system/etc/audio_policy.conf \
-    $(LOCAL_PATH)/audio/init.qcom.audio.sh:system/etc/init.qcom.audio.sh \
-    $(LOCAL_PATH)/audio/listen_platform_info.xml:system/etc/listen_platform_info.xml \
-    $(LOCAL_PATH)/audio/mixer_paths.xml:system/etc/mixer_paths.xml \
-    $(LOCAL_PATH)/audio/acdb/MTP/MTP_Bluetooth_cal.acdb:system/etc/acdbdata/MTP/MTP_Bluetooth_cal.acdb \
-    $(LOCAL_PATH)/audio/acdb/MTP/MTP_General_cal.acdb:system/etc/acdbdata/MTP/MTP_General_cal.acdb \
-    $(LOCAL_PATH)/audio/acdb/MTP/MTP_Global_cal.acdb:system/etc/acdbdata/MTP/MTP_Global_cal.acdb \
-    $(LOCAL_PATH)/audio/acdb/MTP/MTP_Handset_cal.acdb:system/etc/acdbdata/MTP/MTP_Handset_cal.acdb \
-    $(LOCAL_PATH)/audio/acdb/MTP/MTP_Hdmi_cal.acdb:system/etc/acdbdata/MTP/MTP_Hdmi_cal.acdb \
-    $(LOCAL_PATH)/audio/acdb/MTP/MTP_Headset_cal.acdb:system/etc/acdbdata/MTP/MTP_Headset_cal.acdb \
-    $(LOCAL_PATH)/audio/acdb/MTP/MTP_Speaker_cal.acdb:system/etc/acdbdata/MTP/MTP_Speaker_cal.acdb 
 
 # GPS
 PRODUCT_PACKAGES += \
@@ -104,6 +102,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += \
     power.msm8974
 
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/changepowermode.sh:system/bin/changepowermode.sh
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.qualcomm.perf.cores_online=1
+
 # WiFi
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/WCNSS_cfg.dat:system/etc/firmware/wlan/prima/WCNSS_cfg.dat \
@@ -111,35 +115,35 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_wlan_nv.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv.bin \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_wlan_nv_x4.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv_x4.bin \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_wlan_nv_x4lte.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv_x4lte.bin \
-    $(LOCAL_PATH)/wifi/hostapd.accept:system/etc/hostapd/hostapd.accept \
-    $(LOCAL_PATH)/wifi/hostapd.deny:system/etc/hostapd/hostapd.deny \
-    $(LOCAL_PATH)/wifi/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf \
-    $(LOCAL_PATH)/wifi/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
-    $(LOCAL_PATH)/wifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf
-
-# SoftAP
-PRODUCT_PACKAGES += \
-    libwcnss_qmi \
-    wcnss_service
+    $(LOCAL_PATH)/wifi/WCNSS_qcom_wlan_nv_x5.bin:system/etc/firmware/wlan/prima/WCNSS_qcom_wlan_nv_x5.bin
 
 PRODUCT_PACKAGES += \
     libwpa_client \
     hostapd \
-    dhcpcd.conf \
     wpa_supplicant \
-    wpa_supplicant.conf
+    wpa_supplicant.conf \
+    wpa_supplicant_overlay.conf \
+    p2p_supplicant_overlay.conf \
+    hostapd_default.conf \
+    hostapd.accept \
+    hostapd.deny
+
+# SoftAP
+PRODUCT_PACKAGES += \
+    wcnss_service
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    wifi.interface=wlan0 \
+    wifi.supplicant_scan_interval=15 \
+    wlan.driver.ath=0 \
+    ro.use_data_netmgrd=true \
+    persist.data.netmgrd.qos.enable=true \
+    persist.data.tcpackprio.enable=true \
+    ro.data.large_tcp_window_size=true
 
 # IPC router config
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/sec_config:system/etc/sec_config
-
-# Media profile
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_ffmpeg.xml:system/etc/media_codecs_ffmpeg.xml \
-    $(LOCAL_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml
 
 # NFC
 PRODUCT_PACKAGES += \
@@ -158,23 +162,40 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/thermal-engine.conf:system/etc/thermal-engine-8974.conf \
 
+# Proprietery Firmware
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/system/etc/android_model_facea.dat:system/etc/android_model_facea.dat \
-    $(LOCAL_PATH)/rootdir/system/etc/android_model_faceg.dat:system/etc/android_model_faceg.dat \
-    $(LOCAL_PATH)/rootdir/system/etc/hsic.control.bt.sh:system/etc/hsic.control.bt.sh \
-    $(LOCAL_PATH)/rootdir/system/etc/init.qcom.bt.sh:system/etc/init.qcom.bt.sh \
-    $(LOCAL_PATH)/rootdir/system/etc/init.qcom.fm.sh:system/etc/init.qcom.fm.sh \
-    $(LOCAL_PATH)/rootdir/system/etc/init.qcom.modem_links.sh:system/etc/init.qcom.modem_links.sh \
-    $(LOCAL_PATH)/rootdir/system/etc/init.qcom.post_boot.sh:system/etc/init.qcom.post_boot.sh \
-    $(LOCAL_PATH)/rootdir/system/etc/init.qcom.wifi.sh:system/etc/init.qcom.wifi.sh \
-    $(LOCAL_PATH)/rootdir/system/etc/qca6234-service.sh:system/etc/qca6234-service.sh \
-    $(LOCAL_PATH)/rootdir/system/etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin:system/etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin \
-    $(LOCAL_PATH)/rootdir/system/etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin.pca:system/etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin.pca \
-    $(LOCAL_PATH)/rootdir/system/etc/usf_post_boot.sh:system/etc/usf_post_boot.sh \
-    $(LOCAL_PATH)/rootdir/system/etc/xtwifi.conf:system/etc/xtwifi.conf \
-    $(LOCAL_PATH)/rootdir/system/etc/modem/Diag.cfg:system/etc/modem/Diag.cfg
+    $(LOCAL_PATH)/rootdir/etc/android_model_facea.dat:system/etc/android_model_facea.dat \
+    $(LOCAL_PATH)/rootdir/etc/android_model_faceg.dat:system/etc/android_model_faceg.dat \
+    $(LOCAL_PATH)/rootdir/etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin:system/etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin \
+    $(LOCAL_PATH)/rootdir/etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin.pca:system/etc/sdm_200_HOG3x3_Grid3x3_bin5_noproj_zero_reduced.bin.pca \
+    $(LOCAL_PATH)/rootdir/etc/xtwifi.conf:system/etc/xtwifi.conf \
+    $(LOCAL_PATH)/rootdir/etc/calib.cfg:system/etc/calib.cfg \
+    $(LOCAL_PATH)/rootdir/etc/modem/Diag.cfg:system/etc/modem/Diag.cfg
 
-# Media
+# Audio
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/audio/audio_policy.conf:system/etc/audio_policy.conf \
+    $(LOCAL_PATH)/audio/init.qcom.audio.sh:system/etc/init.qcom.audio.sh \
+    $(LOCAL_PATH)/audio/listen_platform_info.xml:system/etc/listen_platform_info.xml \
+    $(LOCAL_PATH)/audio/mixer_paths.xml:system/etc/mixer_paths.xml \
+    $(LOCAL_PATH)/audio/acdb/MTP/MTP_Bluetooth_cal.acdb:system/etc/acdbdata/MTP/MTP_Bluetooth_cal.acdb \
+    $(LOCAL_PATH)/audio/acdb/MTP/MTP_General_cal.acdb:system/etc/acdbdata/MTP/MTP_General_cal.acdb \
+    $(LOCAL_PATH)/audio/acdb/MTP/MTP_Global_cal.acdb:system/etc/acdbdata/MTP/MTP_Global_cal.acdb \
+    $(LOCAL_PATH)/audio/acdb/MTP/MTP_Handset_cal.acdb:system/etc/acdbdata/MTP/MTP_Handset_cal.acdb \
+    $(LOCAL_PATH)/audio/acdb/MTP/MTP_Hdmi_cal.acdb:system/etc/acdbdata/MTP/MTP_Hdmi_cal.acdb \
+    $(LOCAL_PATH)/audio/acdb/MTP/MTP_Headset_cal.acdb:system/etc/acdbdata/MTP/MTP_Headset_cal.acdb \
+    $(LOCAL_PATH)/audio/acdb/MTP/MTP_Speaker_cal.acdb:system/etc/acdbdata/MTP/MTP_Speaker_cal.acdb
+
+# Media profile
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
+    $(LOCAL_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_ffmpeg.xml:system/etc/media_codecs_ffmpeg.xml
+
+# Media & Audio
 PRODUCT_PACKAGES += \
     libc2dcolorconvert \
     libdivxdrmdecrypt \
@@ -236,7 +257,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.qualcomm.sensors.scrn_ortn=true \
     ro.qualcomm.sensors.georv=true \
     ro.qualcomm.sensors.game_rv=true \
-    ro.qti.sdk.sensors.gestures=true \
     ro.qc.sensors.step_detector=true \
     ro.qc.sensors.step_counter=true \
     ro.qc.sensors.max_geomag_rotvec=true \
@@ -298,30 +318,21 @@ PRODUCT_PACKAGES += \
 
 #Bluetooth
 PRODUCT_PROPERTY_OVERRIDES += \
+    qcom.bt.dev_power_class=1 \
+    bluetooth.hfp.client=1 \
+    ro.bluetooth.alwaysbleon=true \
     qcom.bt.dev_power_class=1
-
-PRODUCT_CHARACTERISTICS := nosdcard
 
 ifneq ($(QCPATH),)
 # proprietary wifi display, if available
 PRODUCT_BOOT_JARS += WfdCommon
 endif
 
-# Enable Bluetooth HFP service
-PRODUCT_PROPERTY_OVERRIDES += \
-    qcom.bt.dev_power_class=1 \
-    bluetooth.hfp.client=1
-
 # System properties
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.usb.hvdcp.detect=true \
     ro.nfc.port=I2C \
     ro.fm.transmitter=false \
-    persist.sys.root_access=1 \
     com.qc.hardware=true \
-    qcom.bt.dev_power_class=1 \
-    bluetooth.hfp.client=1 \
-    ro.bluetooth.alwaysbleon=true \
     persist.demo.hdmirotationlock=false \
     ro.hdmi.enable=true \
     debug.sf.hw=1 \
@@ -329,19 +340,16 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.hwc.mdpcomp.enable=true \
     debug.mdpcomp.logs=0 \
     debug.composition.type=dyn \
-    ro.sf.lcd_density=420 \
+    ro.sf.lcd_density=480 \
     dev.pm.dyn_samplingrate=1 \
     ro.opengles.version=196608 \
-    wifi.interface=wlan0 \
-    wifi.supplicant_scan_interval=15 \
-    wlan.driver.ath=0 \
-    ril.subscription.types=RUIM \
+    ril.subscription.types=NV,RUIM \
     persist.omh.enabled=true \
     persist.sys.ssr.restart_level=3 \
     persist.timed.enable=true \
     persist.debug.wfd.enable=1 \
     persist.sys.wfd.virtual=0 \
-    media.stagefright.use-awesome=true \
+    persist.sys.media.use-awesome=true \
     debug.mdpcomp.4k2kSplit=1
 
 # Permissions

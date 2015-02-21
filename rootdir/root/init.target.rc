@@ -51,12 +51,19 @@ on fs
     # these partition flashed on the device. Failure to mount any partition in fstab file
     # results in failure to launch late-start class.
 
+    wait /dev/block/platform/msm_sdcc.1/by-name/cache
+    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/cache /cache noatime nosuid nodev barrier=1
+
+    wait /dev/block/platform/msm_sdcc.1/by-name/persist
+    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/persist /persist nosuid nodev barrier=1
+
     restorecon_recursive   /persist
     mkdir /persist/data 0700 system system
     mkdir /persist/data/sfs 0700 system system
     mkdir /persist/data/tz 0700 system system
 
-    mount vfat ${LOCAL_ENV_CURR_MODEM} /firmware ro context=u:object_r:firmware_file:s0,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337
+    wait /dev/block/platform/msm_sdcc.1/by-name/modem
+    mount vfat /dev/block/platform/msm_sdcc.1/by-name/modem /firmware ro context=u:object_r:firmware_file:s0,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337
 
 on post-fs-data
     mkdir /data/tombstones 0771 system system
@@ -78,6 +85,10 @@ on post-fs-data
     chown system system /dev/sysmatdrv
     chmod 0660 /dev/sysmatdrv
 
+    # Torch
+    chown system camera /sys/class/leds/flashlight/brightness
+    chmod 0660 /sys/class/leds/flashlight/brightness
+
 on boot
     chown system system /sys/class/input/input0/enabled
     chown system system /sys/class/input/input1/enabled
@@ -88,13 +99,17 @@ on boot
     chown system system /sys/class/input/input6/enabled
     chown system system /sys/bus/i2c/devices/2-004a/golden_ref
     chown system system /sys/bus/i2c/devices/2-004a/golden_en
-
+    chown system system /sys/bus/i2c/devices/2-0048/auto_tune
+    chown system system /sys/bus/i2c/devices/2-004b/hover_tune
+    chown system system /sys/bus/i2c/devices/2-004b/hover_from_flash
+    chown system system /sys/devices/fda0c000.qcom,cci/1c.qcom,actuator/bu63163
+    exec /system/bin/sh /system/bin/atmel_hover_tune.sh
 
 # Dynamically modify golden_ref setting
 on property:persist.atmel.golden.enable=1
     write /sys/bus/i2c/devices/2-004a/golden_en 1
 
-on property:persist.atmel.golden.enable=0
+#on property:persist.atmel.golden.enable=0
     write /sys/bus/i2c/devices/2-004a/golden_en 0
 
 # Allow usb charging to be disabled persistently
@@ -131,12 +146,6 @@ service qcamerasvr /system/bin/mm-qcamera-daemon
     class late_start
     user camera
     group camera system inet input graphics
-
-#start gesture server as daemon
-service qgesturesvr /system/bin/mm-gesture-daemon
-    class late_start
-    user system
-    group system camera input graphics net_bt_stack
 
 #start GNSS/Sensor interface daemon
 service gsiff_daemon /system/bin/gsiff_daemon
@@ -176,12 +185,17 @@ service mpdecision /system/bin/mpdecision --avg_comp
    disabled
 
 service thermal-engine /system/bin/thermal-engine
-   class main
    user root
    socket thermal-send-client stream 0666 system system
    socket thermal-recv-client stream 0660 system system
    socket thermal-recv-passive-client stream 0666 system system
    group root
+   disabled
+
+service thermal-perf /system/bin/thermal-engine --config /system/etc/thermal-engine-perf.conf
+   class main
+   user root
+   group radio system
 
 service time_daemon /system/bin/time_daemon
    class late_start
@@ -274,6 +288,26 @@ service nqs /system/bin/nqs
     socket nqs_qsb_comm stream 660 system system
     user system
     group drmrpc
+
+service changepowermode /system/bin/changepowermode.sh
+    user root
+    oneshot
+    disabled
+
+on property:sys.perf.profile=2
+    start changepowermode
+    stop thermal-engine
+    start thermal-perf
+
+on property:sys.perf.profile=1
+    start changepowermode
+    stop thermal-perf
+    start thermal-engine
+
+on property:sys.perf.profile=0
+    start changepowermode
+    stop thermal-perf
+    start thermal-engine
 
 on property:persist.sys.display_prefer=0
     write /sys/devices/virtual/graphics/fb0/msm_fb_dispparam 0x2

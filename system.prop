@@ -19,6 +19,8 @@ vidc.debug.level=4
 # System property for cabl
 ro.qualcomm.cabl=0
 ro.qcom.ad=1
-ro.qcom.ad.calib.data=/data/calib.cfg
+ro.qcom.ad.calib.data=/system/etc/calib.cfg
 
-qemu.hw.mainkeys=0
+ro.qc.sdk.sensors.gestures=true
+ro.qc.sdk.gestures.camera=false
+ro.qc.sdk.camera.facialproc=false
