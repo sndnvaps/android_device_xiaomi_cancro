@@ -13,7 +13,7 @@ CPU     | 2.3GHz Quad-Core MSM8974AB
 GPU     | Adreno 330
 Memory  | 2GB RAM
 Shipped Android Version | 4.3 and 4.4.2
-Storage | 16GB
+Storage | 16GB/64GB
 Battery | 3050 mAh
 Display | 5.0" 1920 x 1080 px
 Camera  | 13MPx, LED Flash
