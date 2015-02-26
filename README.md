@@ -25,13 +25,14 @@ This branch is for building CyanogenMod 12  ROMS.
 
 
 Cancro support MultiBoot (Twrp or cwm Recovery must support Multiboot) 
+
 Basic    | Partition Sizes 
 --------:|:---------------------
 Boot     | 16MB
 Boot1    | 16MB
 Recovery | 16MB
 system   | 629.5MB
-syste1   | 629.5MB 
+system1   | 629.5MB 
 userdata | 55.3GB
 cache    | 377.8MB 
 ---------|----------------------
