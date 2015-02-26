@@ -13,11 +13,29 @@ CPU     | 2.3GHz Quad-Core MSM8974AB
 GPU     | Adreno 330
 Memory  | 2GB RAM
 Shipped Android Version | 4.3 and 4.4.2
-Storage | 16GB/64GB
+Storage | 64GB
 Battery | 3050 mAh
 Display | 5.0" 1920 x 1080 px
 Camera  | 13MPx, LED Flash
 
 ![Xiaomi Mi3](http://cdn.gsmarena.com/vv/reviewsimg/xiaomi-mi-3/gal/gsmarena_004.jpg "Xiaomi Mi3 in black")
 
-This branch is for building CyanogenMod 11 (or Android KitKat 4.4 AOSP based roms) ROMS.
+This branch is for building CyanogenMod 12  ROMS.
+
+
+
+Cancro support MultiBoot (Twrp or cwm Recovery must support Multiboot) 
+Basic    | Partition Sizes 
+--------:|:---------------------
+Boot     | 16MB
+Boot1    | 16MB
+Recovery | 16MB
+system   | 629.5MB
+syste1   | 629.5MB 
+userdata | 55.3GB
+cache    | 377.8MB 
+---------|----------------------
+system + |  1.23GB 
+system1  |
+
+
