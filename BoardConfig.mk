@@ -122,12 +122,36 @@ BOARD_PERSISTIMAGE_PARTITION_SIZE := 16384000
 BOARD_FLASH_BLOCK_SIZE := 131072
 
 # Recovery
-TARGET_RECOVERY_FSTAB            := device/xiaomi/cancro/rootdir/root/fstab.qcom
+#TARGET_RECOVERY_FSTAB            := device/xiaomi/cancro/rootdir/root/fstab.qcom
 RECOVERY_FSTAB_VERSION           := 2
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 BOARD_NATIVE_DUALBOOT := true
 BOARD_NATIVE_DUALBOOT_SINGLEDATA := true
 TARGET_RECOVERY_LCD_BACKLIGHT_PATH := \"/sys/class/leds/lcd-backlight/brightness\"
+
+# TWRP
+ #if var is true , just build twrp 
+BUILD_TWRP_AUTO := true
+ifneq ($(BUILD_TWRP_AUTO),true)
+TARGET_RECOVERY_FSTAB            := device/xiaomi/cancro/rootdir/root/twrp.fstab 
+else 
+TARGET_RECOVERY_FSTAB            := device/xiaomi/cancro/rootdir/root/fstab.qcom
+endif 
+
+DEVICE_RESOLUTION := 1080x1920
+RECOVERY_GRAPHICS_USE_LINELENGTH := true
+TW_FLASH_FROM_STORAGE := true
+RECOVERY_SDCARD_ON_DATA := true
+
+TW_INCLUDE_L_CRYPTO := true
+TW_NO_USB_STORAGE := false
+BOARD_HAS_NO_REAL_SDCARD := true
+
+TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
+TW_MAX_BRIGHTNESS := 160
+
+TW_NO_SCREEN_TIMEOUT := true
+TW_NO_SCREEN_BLANK := true
 
 USE_CHINESE_RECOVERY := false
 ifneq ($(USE_CHINESE_RECOVERY),true)
