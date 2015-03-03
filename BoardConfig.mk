@@ -132,7 +132,7 @@ TARGET_RECOVERY_LCD_BACKLIGHT_PATH := \"/sys/class/leds/lcd-backlight/brightness
 # TWRP
  #if var is true , just build twrp 
 BUILD_TWRP_AUTO := true
-ifneq ($(BUILD_TWRP_AUTO),true)
+ifeq ($(BUILD_TWRP_AUTO),true)
 TARGET_RECOVERY_FSTAB            := device/xiaomi/cancro/rootdir/root/twrp.fstab 
 else 
 TARGET_RECOVERY_FSTAB            := device/xiaomi/cancro/rootdir/root/fstab.qcom
